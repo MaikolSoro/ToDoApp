@@ -1,4 +1,4 @@
-package com.michael.todoapp.data
+package com.michael.todoapp.data.models
 
 enum class Priority {
 

@@ -9,11 +9,13 @@ import com.michael.todoapp.databinding.RowLayoutBinding
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
-    var dataList = emptyList<ToDoData>()
+    private var dataList = emptyList<ToDoData>()
 
     class MyViewHolder(private val binding: RowLayoutBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(toDoData: ToDoData){
+            binding.toDoData = toDoData
+            binding.executePendingBindings()
 
         }
         companion object{
@@ -44,6 +46,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     fun setData(toDoData: List<ToDoData>){
         this.dataList = toDoData
+        notifyDataSetChanged()
     }
 
 }

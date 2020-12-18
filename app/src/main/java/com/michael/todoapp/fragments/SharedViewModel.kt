@@ -1,9 +1,7 @@
 package com.michael.todoapp.fragments
 
 import android.app.Application
-import android.text.TextUtils
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -63,9 +61,7 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun verifyDataFromUser(title: String, description: String): Boolean {
-        return if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
-            false
-        } else !(title.isEmpty() || description.isEmpty())
+        return !(title.isEmpty() || description.isEmpty())
     }
 
     fun parsePriority(priority: String): Priority {

@@ -28,6 +28,7 @@ class AddFragment : Fragment() {
 
         // Set Menu
         setHasOptionsMenu(true)
+
         return view
     }
 

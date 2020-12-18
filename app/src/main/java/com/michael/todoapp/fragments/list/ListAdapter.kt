@@ -4,37 +4,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michael.todoapp.R
-import com.michael.todoapp.data.models.Priority
 import com.michael.todoapp.data.models.ToDoData
+import com.michael.todoapp.databinding.RowLayoutBinding
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     var dataList = emptyList<ToDoData>()
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class MyViewHolder(private val binding: RowLayoutBinding) : RecyclerView.ViewHolder(binding.root){
 
+        fun bind(toDoData: ToDoData){
+
+        }
+        companion object{
+            fun from(parent: ViewGroup): MyViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = RowLayoutBinding.inflate(layoutInflater, parent, false)
+                return MyViewHolder(
+                    binding
+                )
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.row_layout, parent, false)
+        return MyViewHolder.from(
+            parent
         )
-
     }
-
-
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-    }
-
 
     override fun getItemCount(): Int {
         return dataList.size
     }
 
-    fun setData(toDoData: List<ToDoData>) {
-
-        this.dataList = toDoData
-        notifyDataSetChanged()
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val currentItem = dataList[position]
+        holder.bind(currentItem)
     }
+
+    fun setData(toDoData: List<ToDoData>){
+        this.dataList = toDoData
+    }
+
 }

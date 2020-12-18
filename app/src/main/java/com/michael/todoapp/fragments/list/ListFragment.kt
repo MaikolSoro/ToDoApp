@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.michael.todoapp.R
+import com.michael.todoapp.data.models.ToDoData
 import com.michael.todoapp.data.viewmodel.ToDoViewModel
 import com.michael.todoapp.databinding.FragmentListBinding
 import com.michael.todoapp.fragments.SharedViewModel
@@ -59,16 +61,33 @@ class ListFragment : Fragment() {
         // Swipe to Delete
         swipeToDelete(recyclerView)
     }
-    private  fun swipeToDelete(recyclerView: RecyclerView){
-        val swipeToDeleteCallback = object  : SwipeToDelete(){
+
+    private fun swipeToDelete(recyclerView: RecyclerView) {
+        val swipeToDeleteCallback = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = adapter.dataList[viewHolder.adapterPosition]
-                mToDoViewModel.deleteItem(itemToDelete)
-                Toast.makeText(requireContext(), "Successfully Removed: '${itemToDelete.title}'", Toast.LENGTH_SHORT).show()
+                val deleteItem = adapter.dataList[viewHolder.adapterPosition]
+                // Delete Item
+                mToDoViewModel.deleteItem(deleteItem)
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                // Restore Deleted item
+                restoreDeletedData(viewHolder.itemView,deleteItem, viewHolder.adapterPosition)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun restoreDeletedData(view: View, deleteItem: ToDoData, position: Int) {
+
+        val snackbar = Snackbar.make(
+            view, "Deleted'${deleteItem.title}'",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("Undo"){
+            mToDoViewModel.insertData(deleteItem)
+            adapter.notifyItemChanged(position)
+        }
+        snackbar.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

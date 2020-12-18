@@ -11,6 +11,7 @@ import com.michael.todoapp.data.models.ToDoData
 import com.michael.todoapp.data.viewmodel.ToDoViewModel
 import com.michael.todoapp.fragments.SharedViewModel
 import com.michael.todoapp.databinding.FragmentAddBinding
+
 class AddFragment : Fragment() {
 
     private val mToDoViewModel: ToDoViewModel by viewModels()
@@ -24,12 +25,14 @@ class AddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_add, container, false)
+        _binding = FragmentAddBinding.inflate(layoutInflater, container, false)
 
         // Set Menu
         setHasOptionsMenu(true)
 
-        return view
+        // Spinner Item Selected Listener
+        binding.prioritiesSpinner.onItemSelectedListener = mSharedViewModel.listener
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -67,9 +70,22 @@ class AddFragment : Fragment() {
             // Navigate back
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         } else {
-            Toast.makeText(requireContext(), "Please fill out all fields.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Please fill out all fields.", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
-
+    /**
+     * Called when the view previously created by [.onCreateView] has
+     * been detached from the fragment.  The next time the fragment needs
+     * to be displayed, a new view will be created.  This is called
+     * after [.onStop] and before [.onDestroy].  It is called
+     * *regardless* of whether [.onCreateView] returned a
+     * non-null view.  Internally it is called after the view's state has
+     * been saved but before it has been removed from its parent.
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

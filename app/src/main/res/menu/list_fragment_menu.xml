@@ -16,7 +16,7 @@
             <menu>
                 <item
                     android:id="@+id/menu_priority_high"
-                    android:title="@string/priority_hihg" />
+                    android:title="@string/priority_high" />
 
                 <item
                     android:id="@+id/menu_priority_low"

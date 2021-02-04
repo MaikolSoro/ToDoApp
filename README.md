@@ -21,3 +21,5 @@ Develop a Fully Functional To-Do app in Kotlin - ROOM, Navigation Component, Liv
 
 
 
+[best_practice]: <https://www.youtube.com/playlist?list=PLWz5rJ2EKKc-lJo_RGGXL2Psr8vVCTWjM>
+[performace_android]: <https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE>

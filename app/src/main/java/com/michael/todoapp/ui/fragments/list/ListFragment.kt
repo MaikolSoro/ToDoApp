@@ -16,6 +16,7 @@ import com.michael.todoapp.ui.viewmodel.ToDoViewModel
 import com.michael.todoapp.databinding.FragmentListBinding
 import com.michael.todoapp.ui.viewmodel.SharedViewModel
 import com.michael.todoapp.ui.fragments.list.adapter.ListAdapter
+import com.michael.todoapp.utils.hideKeyboard
 
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -51,12 +52,16 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         return binding.root
 
+        // Hide soft keyboard
+        hideKeyboard(requireActivity())
+
     }
 
     private fun setupRecyclerview() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         // Swipe to Delete
         swipeToDelete(recyclerView)
@@ -73,7 +78,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 mToDoViewModel.deleteItem(deleteItem)
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
                 // Restore Deleted item
-                restoreDeletedData(viewHolder.itemView,deleteItem, viewHolder.adapterPosition)
+                restoreDeletedData(viewHolder.itemView, deleteItem, viewHolder.adapterPosition)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
@@ -86,7 +91,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             view, "Deleted'${deleteItem.title}'",
             Snackbar.LENGTH_LONG
         )
-        snackbar.setAction("Undo"){
+        snackbar.setAction("Undo") {
             mToDoViewModel.insertData(deleteItem)
         }
         snackbar.show()
@@ -104,8 +109,12 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_delete_all -> confirmRemoval()
-            R.id.menu_priority_high ->mToDoViewModel.sortByHighPriority.observe(this, Observer { adapter.setData(it) })
-            R.id.menu_priority_low ->mToDoViewModel.sortByLowPriority.observe(this, Observer { adapter.setData(it) })
+            R.id.menu_priority_high -> mToDoViewModel.sortByHighPriority.observe(
+                this,
+                Observer { adapter.setData(it) })
+            R.id.menu_priority_low -> mToDoViewModel.sortByLowPriority.observe(
+                this,
+                Observer { adapter.setData(it) })
         }
         return super.onOptionsItemSelected(item)
     }
@@ -133,7 +142,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        if(query != null){
+        if (query != null) {
             searchThroughDatabase(query)
         }
         return true
@@ -142,15 +151,15 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun searchThroughDatabase(query: String) {
         val searchQuery = "%$query%"
 
-         mToDoViewModel.searchDatabase(searchQuery).observe(this, Observer { list->
-             list?.let{
+        mToDoViewModel.searchDatabase(searchQuery).observe(this, Observer { list ->
+            list?.let {
                 adapter.setData(it)
-             }
-         })
+            }
+        })
     }
 
     override fun onQueryTextChange(query: String?): Boolean {
-        if(query != null){
+        if (query != null) {
             searchThroughDatabase(query)
         }
         return true

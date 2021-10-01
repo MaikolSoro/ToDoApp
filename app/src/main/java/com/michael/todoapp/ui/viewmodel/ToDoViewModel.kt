@@ -15,18 +15,12 @@ class ToDoViewModel(application: Application) : AndroidViewModel(application) {
     private val toDoDao = ToDoDatabase.getDatabase(
         application
     ).toDoDao()
-    private val repository: ToDoRepository
+    private val repository: ToDoRepository = ToDoRepository(toDoDao)
 
-    val getAllData: LiveData<List<ToDoData>>
-    val sortByHighPriority: LiveData<List<ToDoData>>
-    val sortByLowPriority: LiveData<List<ToDoData>>
+    val getAllData: LiveData<List<ToDoData>> = repository.getAllData
+    val sortByHighPriority: LiveData<List<ToDoData>> = repository.sortByHighPriority
+    val sortByLowPriority: LiveData<List<ToDoData>> = repository.sortByLowPriority
 
-    init {
-        repository = ToDoRepository(toDoDao)
-        getAllData = repository.getAllData
-        sortByHighPriority = repository.sortByHighPriority
-        sortByLowPriority = repository.sortByLowPriority
-    }
     fun insertData(toDoData: ToDoData){
         viewModelScope.launch(Dispatchers.IO){
             repository.insertData(toDoData)

@@ -1,4 +1,4 @@
-package com.michael.todoapp.fragments
+package com.michael.todoapp.ui.viewmodel
 
 import android.app.Application
 import android.view.View

@@ -1,4 +1,4 @@
-package com.michael.todoapp.fragments.list
+package com.michael.todoapp.ui.fragments.list
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

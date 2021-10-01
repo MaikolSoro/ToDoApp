@@ -1,4 +1,4 @@
-package com.michael.todoapp.data
+package com.michael.todoapp.data.data_source
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -31,3 +31,4 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_table ORDER BY CASE WHEN priority LIKE 'L%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END")
     fun sortByLowPriority(): LiveData<List<ToDoData>>
 }
+

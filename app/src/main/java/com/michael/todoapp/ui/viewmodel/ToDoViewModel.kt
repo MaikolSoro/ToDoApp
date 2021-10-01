@@ -1,12 +1,12 @@
-package com.michael.todoapp.data.viewmodel
+package com.michael.todoapp.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.michael.todoapp.data.ToDoDatabase
+import com.michael.todoapp.data.data_source.ToDoDatabase
 import com.michael.todoapp.data.models.ToDoData
-import com.michael.todoapp.data.repository.ToDoRepository
+import com.michael.todoapp.domain.repository.ToDoRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

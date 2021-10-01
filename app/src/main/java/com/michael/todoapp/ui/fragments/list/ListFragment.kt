@@ -1,9 +1,8 @@
-package com.michael.todoapp.fragments.list
+package com.michael.todoapp.ui.fragments.list
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.GridLayout
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -13,13 +12,10 @@ import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import com.michael.todoapp.R
 import com.michael.todoapp.data.models.ToDoData
-import com.michael.todoapp.data.viewmodel.ToDoViewModel
+import com.michael.todoapp.ui.viewmodel.ToDoViewModel
 import com.michael.todoapp.databinding.FragmentListBinding
-import com.michael.todoapp.fragments.SharedViewModel
-import com.michael.todoapp.fragments.list.adapter.ListAdapter
-import jp.wasabeef.recyclerview.animators.LandingAnimator
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
-
+import com.michael.todoapp.ui.viewmodel.SharedViewModel
+import com.michael.todoapp.ui.fragments.list.adapter.ListAdapter
 
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -47,6 +43,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         mToDoViewModel.getAllData.observe(viewLifecycleOwner, { data ->
             mSharedViewModel.checkIfDatabaseEmpty(data)
             adapter.setData(data)
+            binding.recyclerView.scheduleLayoutAnimation()
         })
 
         // Set Menu
@@ -60,9 +57,9 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView.itemAnimator = SlideInUpAnimator().apply {
-            addDuration = 300
-        }
+
+        // Swipe to Delete
+        swipeToDelete(recyclerView)
 
         // Swipe to Delete
         swipeToDelete(recyclerView)

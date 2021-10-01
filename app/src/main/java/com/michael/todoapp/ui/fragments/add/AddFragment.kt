@@ -1,4 +1,4 @@
-package com.michael.todoapp.fragments.add
+package com.michael.todoapp.ui.fragments.add
 
 import android.os.Bundle
 import android.view.*
@@ -8,8 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.michael.todoapp.R
 import com.michael.todoapp.data.models.ToDoData
-import com.michael.todoapp.data.viewmodel.ToDoViewModel
-import com.michael.todoapp.fragments.SharedViewModel
+import com.michael.todoapp.ui.viewmodel.ToDoViewModel
+import com.michael.todoapp.ui.viewmodel.SharedViewModel
 import com.michael.todoapp.databinding.FragmentAddBinding
 
 class AddFragment : Fragment() {

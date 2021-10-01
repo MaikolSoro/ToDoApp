@@ -1,7 +1,8 @@
-package com.michael.todoapp.data
+package com.michael.todoapp.data.data_source
 
 import android.content.Context
 import androidx.room.*
+import com.michael.todoapp.data.Converter
 import com.michael.todoapp.data.models.ToDoData
 
 @Database(entities = [ToDoData::class], version = 1, exportSchema = false)

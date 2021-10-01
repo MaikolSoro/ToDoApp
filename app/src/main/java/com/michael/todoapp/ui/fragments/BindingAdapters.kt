@@ -1,4 +1,4 @@
-package com.michael.todoapp.fragments
+package com.michael.todoapp.ui.fragments
 
 import android.view.View
 import android.widget.Spinner
@@ -11,7 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.michael.todoapp.R
 import com.michael.todoapp.data.models.Priority
 import com.michael.todoapp.data.models.ToDoData
-import com.michael.todoapp.fragments.list.ListFragmentDirections
+import com.michael.todoapp.ui.fragments.list.ListFragmentDirections
 
 class BindingAdapters {
 

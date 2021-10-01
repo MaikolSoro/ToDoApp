@@ -1,8 +1,9 @@
-package com.michael.todoapp.data.repository
+package com.michael.todoapp.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.michael.todoapp.data.ToDoDao
+import com.michael.todoapp.data.data_source.ToDoDao
 import com.michael.todoapp.data.models.ToDoData
+import javax.inject.Inject
 
 class ToDoRepository(private val toDoDao: ToDoDao) {
 

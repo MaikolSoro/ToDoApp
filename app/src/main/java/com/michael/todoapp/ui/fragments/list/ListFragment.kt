@@ -7,7 +7,6 @@ import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.*
 import com.google.android.material.snackbar.Snackbar
 import com.michael.todoapp.R
@@ -32,7 +31,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Data binding
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -51,10 +50,10 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         // Set Menu
         setHasOptionsMenu(true)
 
-        return binding.root
-
         // Hide soft keyboard
         hideKeyboard(requireActivity())
+
+        return binding.root
 
     }
 
@@ -67,35 +66,32 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         // Swipe to Delete
         swipeToDelete(recyclerView)
 
-        // Swipe to Delete
-        swipeToDelete(recyclerView)
     }
 
     private fun swipeToDelete(recyclerView: RecyclerView) {
         val swipeToDeleteCallback = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deleteItem = adapter.dataList[viewHolder.adapterPosition]
+                val deletedItem = adapter.dataList[viewHolder.adapterPosition]
                 // Delete Item
-                mToDoViewModel.deleteItem(deleteItem)
+                mToDoViewModel.deleteItem(deletedItem)
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                // Restore Deleted item
-                restoreDeletedData(viewHolder.itemView, deleteItem, viewHolder.adapterPosition)
+                // Restore Deleted Item
+                restoreDeletedData(viewHolder.itemView, deletedItem)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun restoreDeletedData(view: View, deleteItem: ToDoData, position: Int) {
-
-        val snackbar = Snackbar.make(
-            view, "Deleted'${deleteItem.title}'",
+    private fun restoreDeletedData(view: View, deletedItem: ToDoData) {
+        val snackBar = Snackbar.make(
+            view, "Deleted '${deletedItem.title}'",
             Snackbar.LENGTH_LONG
         )
-        snackbar.setAction("Undo") {
-            mToDoViewModel.insertData(deleteItem)
+        snackBar.setAction("Undo") {
+            mToDoViewModel.insertData(deletedItem)
         }
-        snackbar.show()
+        snackBar.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -112,12 +108,38 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             R.id.menu_delete_all -> confirmRemoval()
             R.id.menu_priority_high -> mToDoViewModel.sortByHighPriority.observe(
                 viewLifecycleOwner,
-                Observer { adapter.setData(it) })
+                { adapter.setData(it) })
             R.id.menu_priority_low -> mToDoViewModel.sortByLowPriority.observe(
                 viewLifecycleOwner,
-                Observer { adapter.setData(it) })
+                { adapter.setData(it) })
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if (query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+    private fun searchThroughDatabase(query: String) {
+        val searchQuery = "%$query%"
+
+        mToDoViewModel.searchDatabase(searchQuery)
+            .observeOnce(viewLifecycleOwner, { list ->
+                list?.let {
+                    adapter.setData(it)
+                }
+            })
     }
 
     // Show AlertDialog to Confirm Removal of All Items from Database Table
@@ -140,31 +162,6 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        if (query != null) {
-            searchThroughDatabase(query)
-        }
-        return true
-    }
-
-    private fun searchThroughDatabase(query: String) {
-        val searchQuery = "%$query%"
-
-        mToDoViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, Observer { list ->
-            list?.let {
-
-                adapter.setData(it)
-            }
-        })
-    }
-
-    override fun onQueryTextChange(query: String?): Boolean {
-        if (query != null) {
-            searchThroughDatabase(query)
-        }
-        return true
     }
 
 }

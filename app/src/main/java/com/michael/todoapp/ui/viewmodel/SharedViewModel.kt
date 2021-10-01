@@ -26,11 +26,13 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
 
     val listener: AdapterView.OnItemSelectedListener = object :
         AdapterView.OnItemSelectedListener {
-
         override fun onNothingSelected(p0: AdapterView<*>?) {}
-
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
+        override fun onItemSelected(
+            parent: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long
+        ) {
             when (position) {
                 0 -> {
                     (parent?.getChildAt(0) as TextView).setTextColor(
@@ -78,6 +80,5 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
             else -> Priority.LOW
         }
     }
-
 
 }

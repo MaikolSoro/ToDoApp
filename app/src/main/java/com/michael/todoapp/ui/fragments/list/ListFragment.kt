@@ -17,6 +17,7 @@ import com.michael.todoapp.databinding.FragmentListBinding
 import com.michael.todoapp.ui.viewmodel.SharedViewModel
 import com.michael.todoapp.ui.fragments.list.adapter.ListAdapter
 import com.michael.todoapp.utils.hideKeyboard
+import com.michael.todoapp.utils.observeOnce
 
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -110,10 +111,10 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         when (item.itemId) {
             R.id.menu_delete_all -> confirmRemoval()
             R.id.menu_priority_high -> mToDoViewModel.sortByHighPriority.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { adapter.setData(it) })
             R.id.menu_priority_low -> mToDoViewModel.sortByLowPriority.observe(
-                this,
+                viewLifecycleOwner,
                 Observer { adapter.setData(it) })
         }
         return super.onOptionsItemSelected(item)
@@ -151,8 +152,9 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun searchThroughDatabase(query: String) {
         val searchQuery = "%$query%"
 
-        mToDoViewModel.searchDatabase(searchQuery).observe(this, Observer { list ->
+        mToDoViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, Observer { list ->
             list?.let {
+
                 adapter.setData(it)
             }
         })

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="args"
-            type="com.michael.todoapp.fragments.update.UpdateFragmentArgs" />
+            type="com.michael.todoapp.ui.fragments.update.UpdateFragmentArgs" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

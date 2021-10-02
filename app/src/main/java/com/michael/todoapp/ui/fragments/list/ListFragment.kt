@@ -2,6 +2,7 @@ package com.michael.todoapp.ui.fragments.list
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
@@ -54,18 +55,15 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         hideKeyboard(requireActivity())
 
         return binding.root
-
     }
 
     private fun setupRecyclerview() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
-        recyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         // Swipe to Delete
         swipeToDelete(recyclerView)
-
     }
 
     private fun swipeToDelete(recyclerView: RecyclerView) {
@@ -106,16 +104,11 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_delete_all -> confirmRemoval()
-            R.id.menu_priority_high -> mToDoViewModel.sortByHighPriority.observe(
-                viewLifecycleOwner,
-                { adapter.setData(it) })
-            R.id.menu_priority_low -> mToDoViewModel.sortByLowPriority.observe(
-                viewLifecycleOwner,
-                { adapter.setData(it) })
+            R.id.menu_priority_high -> mToDoViewModel.sortByHighPriority.observe(viewLifecycleOwner, { adapter.setData(it) })
+            R.id.menu_priority_low -> mToDoViewModel.sortByLowPriority.observe(viewLifecycleOwner, { adapter.setData(it) })
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         if (query != null) {
@@ -134,12 +127,12 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun searchThroughDatabase(query: String) {
         val searchQuery = "%$query%"
 
-        mToDoViewModel.searchDatabase(searchQuery)
-            .observeOnce(viewLifecycleOwner, { list ->
-                list?.let {
-                    adapter.setData(it)
-                }
-            })
+        mToDoViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, { list ->
+            list?.let {
+                Log.d("ListFragment", "searchThroughDatabase")
+                adapter.setData(it)
+            }
+        })
     }
 
     // Show AlertDialog to Confirm Removal of All Items from Database Table

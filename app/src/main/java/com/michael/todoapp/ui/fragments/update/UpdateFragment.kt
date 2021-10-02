@@ -25,13 +25,11 @@ class UpdateFragment : Fragment() {
     private var _binding: FragmentUpdateBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        // Data Binding
+        // Data binding
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         binding.args = args
 
@@ -44,6 +42,10 @@ class UpdateFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.update_fragment_menu, menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_save -> updateItem()
@@ -52,25 +54,7 @@ class UpdateFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun confirmItemRemoval() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes") { _, _ ->
-            mToDoViewModel.deleteItem(args.currentItem)
-            Toast.makeText(
-                requireContext(),
-                "Successfully Removed: ${args.currentItem.title}",
-                Toast.LENGTH_SHORT
-            ).show()
-            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-        }
-        builder.setNegativeButton("No") { _, _ -> }
-        builder.setTitle("Delete '${args.currentItem.title}'?")
-        builder.setMessage("Are you sure you want to remove '${args.currentItem.title}'?")
-        builder.create().show()
-    }
-
     private fun updateItem() {
-
         val title = binding.currentTitleEt.text.toString()
         val description = binding.currentDescriptionEt.text.toString()
         val getPriority = binding.currentPrioritiesSpinner.selectedItem.toString()
@@ -94,9 +78,24 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.update_fragment_menu, menu)
+    // Show AlertDialog to Confirm Item Removal
+    private fun confirmItemRemoval() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes") { _, _ ->
+            mToDoViewModel.deleteItem(args.currentItem)
+            Toast.makeText(
+                requireContext(),
+                "Successfully Removed: ${args.currentItem.title}",
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete '${args.currentItem.title}'?")
+        builder.setMessage("Are you sure you want to remove '${args.currentItem.title}'?")
+        builder.create().show()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

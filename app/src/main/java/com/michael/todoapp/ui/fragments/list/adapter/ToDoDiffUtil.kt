@@ -4,10 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.michael.todoapp.data.models.ToDoData
 
 class ToDoDiffUtil(
-
     private val oldList: List<ToDoData>,
     private val newList: List<ToDoData>
-) : DiffUtil.Callback() {
+): DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size
@@ -21,9 +20,8 @@ class ToDoDiffUtil(
         return oldList[oldItemPosition] === newList[newItemPosition]
     }
 
-
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return  oldList[oldItemPosition].id == newList[newItemPosition].id
+        return oldList[oldItemPosition].id == newList[newItemPosition].id
                 && oldList[oldItemPosition].title == newList[newItemPosition].title
                 && oldList[oldItemPosition].description == newList[newItemPosition].description
                 && oldList[oldItemPosition].priority == newList[newItemPosition].priority

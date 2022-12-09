@@ -15,7 +15,7 @@ import com.michael.todoapp.ui.fragments.list.ListFragmentDirections
 
 class BindingAdapters {
 
-    companion object {
+    companion object{
 
         @BindingAdapter("android:navigateToAddFragment")
         @JvmStatic
@@ -26,51 +26,36 @@ class BindingAdapters {
                 }
             }
         }
-
         @BindingAdapter("android:emptyDatabase")
         @JvmStatic
-        fun emptyDatabase(view: View, emptyDatabase: MutableLiveData<Boolean>) {
-            when (emptyDatabase.value) {
+        fun emptyDatabase(view: View, emptyDatabase: MutableLiveData<Boolean>){
+            when(emptyDatabase.value){
                 true -> view.visibility = View.VISIBLE
                 false -> view.visibility = View.INVISIBLE
+                else -> {}
             }
         }
-
         @BindingAdapter("android:parsePriorityToInt")
         @JvmStatic
-        fun parsePriorityToInt(view: Spinner, priority: Priority) {
-            when (priority) {
-                Priority.HIGH -> {
-                    view.setSelection(0)
-                }
-                Priority.MEDIUM -> {
-                    view.setSelection(1)
-                }
-                Priority.LOW -> {
-                    view.setSelection(2)
-                }
+        fun parsePriorityToInt(view: Spinner, priority: Priority){
+            when(priority){
+                Priority.HIGH -> { view.setSelection(0) }
+                Priority.MEDIUM -> { view.setSelection(1) }
+                Priority.LOW -> { view.setSelection(2) }
             }
         }
-
         @BindingAdapter("android:parsePriorityColor")
         @JvmStatic
-        fun parsePriorityColor(cardView: CardView, priority: Priority) {
-            when (priority) {
-                Priority.HIGH -> {
-                    cardView.setCardBackgroundColor(cardView.context.getColor(R.color.red))
-                }
-                Priority.MEDIUM -> {
-                    cardView.setCardBackgroundColor(cardView.context.getColor(R.color.yellow))
-                }
-                Priority.LOW -> {
-                    cardView.setCardBackgroundColor(cardView.context.getColor(R.color.green))
-                }
+        fun parsePriorityColor(cardView: CardView, priority: Priority){
+            when(priority){
+                Priority.HIGH -> { cardView.setCardBackgroundColor(cardView.context.getColor(R.color.red)) }
+                Priority.MEDIUM -> { cardView.setCardBackgroundColor(cardView.context.getColor(R.color.yellow)) }
+                Priority.LOW -> { cardView.setCardBackgroundColor(cardView.context.getColor(R.color.green)) }
             }
         }
-
         @BindingAdapter("android:sendDataToUpdateFragment")
         @JvmStatic
-        fun sendDataToUpdateFragment(view: ConstraintLayout, currentItem: ToDoData) {
+        fun sendDataToUpdateFragment(view: ConstraintLayout, currentItem: ToDoData){
             view.setOnClickListener {
                 val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
                 view.findNavController().navigate(action)
@@ -78,4 +63,5 @@ class BindingAdapters {
         }
 
     }
+
 }

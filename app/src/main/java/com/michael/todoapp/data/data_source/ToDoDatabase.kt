@@ -5,7 +5,9 @@ import androidx.room.*
 import com.michael.todoapp.data.Converter
 import com.michael.todoapp.data.models.ToDoData
 
-@Database(entities = [ToDoData::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ToDoData::class], version = 2, exportSchema = false
+)
 @TypeConverters(Converter::class)
 abstract class ToDoDatabase : RoomDatabase() {
 
@@ -25,7 +27,8 @@ abstract class ToDoDatabase : RoomDatabase() {
             Room.databaseBuilder(
                 context.applicationContext,
                 ToDoDatabase::class.java, "todo_database"
-            ).build()
-    }
+            )
+                .build()
 
+    }
 }
